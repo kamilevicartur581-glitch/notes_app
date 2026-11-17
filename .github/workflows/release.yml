@@ -23,13 +23,16 @@ jobs:
           flutter-version: '3.47.2'
           channel: 'stable'
 
-      - name: Decode Keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/upload-keystore.jks
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
-          echo "storeFile=upload-keystore.jks" >> android/key.properties
+      - - name: Decode Keystore
+      - run: |
+      - # Создаем ключ в папке android/app
+      - echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
+
+      - # Создаем key.properties в папке android
+      - echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
+      - echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+      - echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+      - echo "storeFile=upload-keystore.jks" >> android/key.properties
 
       - name: Get dependencies
         run: flutter pub get
